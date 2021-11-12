@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Autor: Tomas Dominguez
+#Autor: Tomas Dominguez.
 
 #Colors
 greenColour="\e[0;32m\033[1m"
