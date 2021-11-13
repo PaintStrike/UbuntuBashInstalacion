@@ -20,14 +20,14 @@ ctrl_c(){
 }
 
 clear
-echo -e "  ${yellowColour}                 _                 _         "
+echo -e " ${yellowColour}                 _                 _         "
 echo -e "             _   _| |__  _   _ _ __ | |_ _   _ "
 echo -e "            | | | | '_ \| | | | '_ \| __| | | |"
 echo -e "            | |_| | |_) | |_| | | | | |_| |_| |"
 echo -e "             \__,_|_.__/ \__,_|_| |_|\__|\__,_|"
 echo -e "    Mi Setup Ubuntu 20.04 Tomas Dominguez - Mi primer script :P\n \n \n${endColour}"
-echo -e " ${turquoiseColour}\t\tLista de paquetes a instalar \n\n -Terminator(Terminal)\n -Discord \n -Visual Studio Code \n -VLC \n -Ubuntu restricted \n -GitHub \n -Gnome Tweeks \n -Paquetes de Compresion: [rar, unrar, p7zip-full, p7zip-rar] \n -Wine \n -OpenJDK-11 Java \n -Net Tools \n \n ${endColour}"
-echo -e "${purpleColour}\t\tLista de cambios visuales \n\n -Cambia el Theme a oscuro \n -Cambia de Lugar el dock y otras configs \n -Esconde el basurero del Desktop \n -Esconde la carpeta de user en Desktop \n -Nunca se apaga la pantalla\n\n\n${endColour}"
+echo -e " ${turquoiseColour}\t\tLista de paquetes a instalar \n -VirtualBox \n -Terminator(Terminal)\n -Htop\n -Vim \n -TorNetwork\n -Discord\n -ShellCheck \n -Visual Studio Code \n -VLC \n -Ubuntu restricted \n -GitHub \n -Gnome Tweeks \n -Paquetes de Compresion: [rar, unrar, p7zip-full, p7zip-rar] \n -Wine \n -OpenJDK-11 Java \n -Net Tools \n \n ${endColour}"
+echo -e "${purpleColour}\t\tLista de cambios visuales \n\n -Cambia el Theme a oscuro\n -Curl \n -Cambia el background \n -Cambia de Lugar el dock y otras configs \n -Esconde el basurero del Desktop \n -Esconde la carpeta de user en Desktop \n -Nunca se apaga la pantalla\n\n\n${endColour}"
 read -r -p "  [1] Instalacion de VM Rapida (Update y Upgrade + Reboot Opcional) $( echo -e " $espacio ") [2] Actualizar e instalar los paquetes dentro del script (Sistema principal) $( echo -e " $espacio " ) [3] Cambios visuales e internos (General) $( echo -e " $espacio ") [4] DEBUG $( echo -e " $espacio $espacio ") Tu Eleccion: " eleccion
 
 if [[ "$eleccion" == "2" ]]; then
@@ -40,7 +40,7 @@ segundos=5
   while [[ "$segundos" -gt "0" ]]
     do
     sleep 1
-    echo -e "${redColour}$segundos Segundos para el reinicio \n${endColour}"
+    echo -e "${redColour}\t [!] Reinicio en: $segundos \n${endColour}"
     ((segundos--))
     if [[ "$segundos" -eq "0" ]]; then
       echo -e "\n${redColour}[!] Saliendo...\n${endColour}"
@@ -111,9 +111,22 @@ case "$eleccion" in
     echo -e "${yellowColour}-------------------- ShellCheck --------------------${endColour}"  
     sudo apt install shellcheck  
     echo
+    echo -e "${yellowColour}-------------------- TorNetwork --------------------${endColour}" 
+    echo
+    echo -e "Descargando tor-browser-linux64-11.0_en-US.tar.xz..."; wget -qcP /home/$USER/Downloads/ https://dist.torproject.org/torbrowser/11.0/tor-browser-linux64-11.0_en-US.tar.xz;echo "Descarga completada, descomprimiendo y llevando al Desktop"; sleep 1; xz -d /home/$USER/Downloads/tor-browser-linux64-11.0_en-US.tar.xz; tar -xvf /home/$USER/Downloads/tor-browser-linux64-11.0_en-US.tar; rm -rf /home/$USER/Downloads/tor-browser-linux64-11.0_en-US.tar;
+    echo -e "${yellowColour}-------------------- Htop --------------------${endColour}" 
+    sudo apt -y install htop
+    echo -e "${yellowColour}-------------------- Vim --------------------${endColour}" 
+    sudo apt -y install vim
+    echo -e "${yellowColour}-------------------- Curl --------------------${endColour}" 
+    sudo apt -y install curl
+    echo -e "${yellowColour}-------------------- VirtualBox --------------------${endColour}" 
+    sudo apt -y install virtualbox
+    sudo apt -y install virtualbox-ext-pack
     echo -e "${redColour}\n-------------------- FIN DE LA INSTALACION --------------------\n\n${endColour}"
     ;;
   [3]) #ToDo -> Poner mejoras y aprender un poco mas del tweeks. Tambien estaria bueno mostrar cambio por cambio, pero tal vez no (?)
+    read -r -p "$( echo -e " $espacio ")¿Cambiar fondo de pantalla? (Se necesita connecion a internet) [Y/N] $( echo -e " $espacio ") $( echo -e " $espacio ") Tu Eleccion: " internet  #Pregunta si tenes internet para el fondo
     echo -e "${greenColour}-------------------- Configuraciones internas de Ubuntu --------------------${endColour}\n"
     gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM # Cambia de Lugar el dock
     echo -e "${greenColour}[✓] ${endColour}Cambiar de Lugar el Dock"
@@ -133,19 +146,28 @@ case "$eleccion" in
     echo -e "${greenColour}[✓] ${endColour}El Dock ahora se ve mucho mejor"
     dconf write /org/gnome/shell/extensions/desktop-icons/show-home false # Esconde la carpeta de home en desktop
     echo -e "${greenColour}[✓] ${endColour}Carpeta \"$USER\" ya no es visible en el escritorio"
-    dconf write /org/gnome/shell/extensions/desktop-icons/show-home true # Esconde el basurero de home en Desktop
+    dconf write /org/gnome/shell/extensions/desktop-icons/show-home false # Esconde el basurero de home en Desktop
     echo -e "${greenColour}[✓] ${endColour}El Basurero ya no es visible en el escritorio"
     gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false # Esconde el dock
     echo -e "${greenColour}[✓] ${endColour}El dock ahora se esconde cada vez que abris una aplicacion.\n"
+    if [[ "${internet^^}" == "Y" ]];then
+      wget -qcP /home/$USER/Pictures/ https://www.hdwallpaper.nu/wp-content/uploads/2019/01/rick_and_morty-18.png
+      echo -e "${greenColour}[✓] ${endColour}Fondo de pantalla cambiado"
+      gsettings set org.gnome.desktop.background picture-options 'zoom' # Estilo de fondo "Zoom/Center/"
+      gsettings set org.gnome.desktop.background picture-uri 'file:///home/tomas/Pictures/Wallpapers/rick_and_morty-18.png' #Cambia fondo de pantalla a RICK-Gris # Necesitas coneccion a internet.
+      gsettings set org.gnome.desktop.background primary-color '#000000' # Cambia color primary a 0
+    fi
     exit
     ;;
   [4])
+    sudo apt-get -f install
+    rebot=y
     ;;
 esac
 
 if [[ "${rebot^^}" == "Y" ]]; then   # ^^ -> Lo que tenga rebot, lo pasa a mayusculas sin modificar la variable
   reiniciar
-elif [[ "${rebot^^}" == "N" ]]; then
+elif [[ "${rebot^^}" == "N" || "${internet^^}" == "N" ]]; then
   echo -e "\n${redColour}[!] Saliendo...\n${endColour}"
   sleep 1
 else
