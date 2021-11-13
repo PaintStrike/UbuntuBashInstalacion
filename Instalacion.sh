@@ -53,6 +53,7 @@ case "$eleccion" in
   [1])
     clear
     sudo echo
+    clear
     echo -e "${greenColour}\n\n-------------------- Actualizando --------------------\n${endColour}"
     sudo apt -y update 
     sudo apt-get -y dist-upgrade
@@ -63,6 +64,7 @@ case "$eleccion" in
   [2]) #Si, ya se que no es la manera mas optima para instalar paquetes, pero me gusta la visual de cada paquete instalandose
     clear
     sudo echo
+    clear
     echo -e " ${greenColour}-------------------- Instalando actualizaciones --------------------${endColour}"
     # touch ./Logs.txt   ToDo -> Hacer logs de todo lo que hace el script para debug
     sudo apt -y update
