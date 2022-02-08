@@ -26,7 +26,7 @@ echo -e "            | | | | '_ \| | | | '_ \| __| | | |"
 echo -e "            | |_| | |_) | |_| | | | | |_| |_| |"
 echo -e "             \__,_|_.__/ \__,_|_| |_|\__|\__,_|"
 echo -e "    Mi Setup Ubuntu 20.04 Tomas Dominguez \n \n \n${endColour}"
-echo -e " ${turquoiseColour}\t\tLista de paquetes a instalar \n -VirtualBox \n -Terminator(Terminal)\n -Python - Pip \n-Htop\n -Vim \n -TorNetwork\n -Discord\n -ShellCheck \n -Visual Studio Code \n -VLC \n -Ubuntu restricted \n -GitHub \n -Gnome Tweeks \n -Paquetes de Compresion: [rar, unrar, p7zip-full, p7zip-rar] \n -Wine \n -OpenJDK-11 Java \n -Net Tools \n \n ${endColour}"
+echo -e " ${turquoiseColour}\t\tLista de paquetes a instalar \n -VirtualBox \n -Terminator(Terminal)\n -Python - Pip \n -Htop\n -Vim \n -TorNetwork\n -Discord\n -ShellCheck \n -Visual Studio Code \n -VLC \n -Ubuntu restricted \n -GitHub \n -Gnome Tweeks \n -Paquetes de Compresion: [rar, unrar, p7zip-full, p7zip-rar] \n -Wine \n -OpenJDK-11 Java \n -Net Tools \n \n ${endColour}"
 echo -e "${purpleColour}\t\tLista de cambios visuales \n\n -Cambia el Theme a oscuro\n -Curl \n -Cambia el background \n -Cambia de Lugar el dock y otras configs \n -Esconde el basurero del Desktop \n -Esconde la carpeta de user en Desktop \n -Nunca se apaga la pantalla\n\n\n${endColour}"
 read -r -p "  [1] Instalacion de VM Rapida (Update y Upgrade + Reboot Opcional) $( echo -e " $espacio ") [2] Actualizar e instalar los paquetes dentro del script (Sistema principal) $( echo -e " $espacio " ) [3] Cambios visuales e internos (General) $( echo -e " $espacio ") [4] DEBUG $( echo -e " $espacio $espacio ") Tu Eleccion: " eleccion
 
