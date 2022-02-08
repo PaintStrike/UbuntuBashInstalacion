@@ -32,7 +32,7 @@ read -r -p "  [1] Instalacion de VM Rapida (Update y Upgrade + Reboot Opcional) 
 
 if [[ "$eleccion" == "2" ]]; then
   echo ""
-  read -r -p "Reiniciar maquina despues de instalar todo? [Y/N]" rebot
+  read -r -p "Reiniciar maquina despues de la instalacion [Y/N]" rebot
 fi
 
 reiniciar(){
@@ -49,13 +49,18 @@ segundos=5
   done
 }
 
-
 instalar(){
-lista_paquetes=("terminator" "code" "vlc" "ubuntu-restricted-extras" "gnome-tweaks" "rar" "unrar" "p7zip-full" "p7zip-rar" "openjdk-11-jdk" "net-tools" "git" "shellcheck" "htop" "vim" "curl" "virtualbox" "python3-pip")
+lista_paquetes=("terminator" "vlc" "ubuntu-restricted-extras" "gnome-tweaks" "rar" "unrar" "p7zip-full" "p7zip-rar" "openjdk-11-jdk" "net-tools" "git" "shellcheck" "htop" "vim" "curl" "virtualbox" "python3-pip")
 for paquete in "${lista_paquetes[@]}"; do
   echo -e "\n${yellowColour}-------------------- ${paquete%%_*} --------------------${endColour}\n"
   sudo apt install -y "${paquete}"
 done
+}
+
+actualizar(){
+  sudo apt -y update
+  sudo apt-get -y dist-upgrade
+  sudo apt -y upgrade
 }
 
 case "$eleccion" in
@@ -64,18 +69,14 @@ case "$eleccion" in
     sudo echo
     clear
     echo -e "${greenColour}\n\n-------------------- Actualizando --------------------\n${endColour}"
-    sudo apt -y update 
-    sudo apt-get -y dist-upgrade
-    sudo apt -y upgrade
+    actualizar 
     echo -e "${redColour}-------------------- FIN DE LA INSTALACION --------------------\n\n${endColour}"
     read -r -p "Queres reiniciar el sistema ahora mismo? [Y/N]: " rebot
     ;;
   [2])
     clear
     echo -e " ${greenColour}-------------------- Instalando actualizaciones --------------------${endColour}"
-    sudo apt -y update
-    sudo apt -y upgrade
-    sudo apt-get dist-upgrade
+    actualizar
     echo
     instalar
     echo -e "${yellowColour}-------------------- Instalando Visual Studio Code --------------------${endColour}"
@@ -86,14 +87,16 @@ case "$eleccion" in
     echo -e "${yellowColour}-------------------- Discord --------------------${endColour}"
     echo -e "Es normal que tarde un poquito..."
     sudo snap install discord
+    echo "Done"
     echo
     echo -e "${yellowColour}-------------------- Steam --------------------${endColour}"
     sudo add-apt-repository multiverse
     sudo apt -y install steam 
+    echo "Done"
     echo
     echo -e "${yellowColour}-------------------- TorNetwork --------------------${endColour}" 
     echo
-    echo -e "Descargando tor-browser-linux64-11.0_en-US.tar.xz..."; wget -qcP /home/"$USER"/Downloads/ https://dist.torproject.org/torbrowser/11.0/tor-browser-linux64-11.0_en-US.tar.xz;echo "Descarga completada, descomprimiendo y llevando al Desktop"; sleep 1; xz -d /home/"$USER"/Downloads/tor-browser-linux64-11.0_en-US.tar.xz; tar -xvf /home/"$USER"/Downloads/tor-browser-linux64-11.0_en-US.tar; rm -rf /home/"$USER"/Downloads/tor-browser-linux64-11.0_en-US.tar;
+    echo -e "Descargando tor-browser-linux64-11.0_en-US.tar.xz..."; wget -qcP /home/"$USER"/Downloads/ https://dist.torproject.org/torbrowser/11.0/tor-browser-linux64-11.0_en-US.tar.xz ;echo "Descarga completada, descomprimiendo y llevando al Desktop"; sleep 1; xz -d /home/"$USER"/Downloads/tor-*; tar -xvf /home/"$USER"/Downloads/tor-*.tar; rm -rf /home/"$USER"/Downloads/tor-*.tar;
     echo -e "${redColour}\n-------------------- FIN DE LA INSTALACION --------------------\n\n${endColour}"
     ;;
   [3]) #ToDo -> Poner mejoras y aprender un poco mas del tweeks. Tambien estaria bueno mostrar cambio por cambio, pero tal vez no (?)
