@@ -37,8 +37,7 @@ fi
 
 reiniciar(){
 segundos=5
-  while [[ "$segundos" -gt "0" ]]
-    do
+  while [[ "$segundos" -gt "0" ]];do
     sleep 1
     echo -e "${redColour}\t [!] Reinicio en: $segundos \n${endColour}"
     ((segundos--))
@@ -96,11 +95,12 @@ case "$eleccion" in
     echo
     echo -e "${yellowColour}-------------------- TorNetwork --------------------${endColour}" 
     echo
-    echo -e "Descargando tor-browser-linux64-11.0_en-US.tar.xz..."; wget -qcP /home/"$USER"/Downloads/ https://dist.torproject.org/torbrowser/11.0/tor-browser-linux64-11.0_en-US.tar.xz ;echo "Descarga completada, descomprimiendo y llevando al Desktop"; sleep 1; xz -d /home/"$USER"/Downloads/tor-*; tar -xvf /home/"$USER"/Downloads/tor-*.tar; rm -rf /home/"$USER"/Downloads/tor-*.tar;
+    echo -e "Descargando tor-browser-linux64-11..."
+    wget -qcP /home/"$USER"/Downloads/ https://dist.torproject.org/torbrowser/11.0/tor-browser-linux64-11.0_en-US.tar.xz && echo "Descarga completada, descomprimiendo y llevando al Desktop"; sleep 1; xz -d /home/"$USER"/Downloads/tor-*; tar -xvf /home/"$USER"/Downloads/tor-*.tar; rm -rf /home/"$USER"/Downloads/tor-*.tar;
     echo -e "${redColour}\n-------------------- FIN DE LA INSTALACION --------------------\n\n${endColour}"
     ;;
   [3]) #ToDo -> Poner mejoras y aprender un poco mas del tweeks. Tambien estaria bueno mostrar cambio por cambio, pero tal vez no (?)
-    sudo echo
+    sudo echo #Pide permiso de administrador.
     read -r -p "$( echo -e " $espacio ")¿Cambiar fondo de pantalla? (Se necesita connecion a internet) [Y/N] $( echo -e " $espacio ") $( echo -e " $espacio ") Tu Eleccion: " internet  #Pregunta si tenes internet para el fondo
     echo -e "${greenColour}-------------------- Configuraciones internas de Ubuntu --------------------${endColour}\n"
     gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM # Cambia de Lugar el dock
