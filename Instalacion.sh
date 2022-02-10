@@ -49,7 +49,7 @@ segundos=5
 }
 
 instalar(){
-lista_paquetes=("terminator" "vlc" "ubuntu-restricted-extras" "gnome-tweaks" "rar" "unrar" "p7zip-full" "p7zip-rar" "openjdk-11-jdk" "net-tools" "git" "shellcheck" "htop" "vim" "curl" "virtualbox" "python3-pip")
+lista_paquetes=("terminator" "vlc" "gnome-tweaks" "rar" "unrar" "p7zip-full" "p7zip-rar" "openjdk-11-jdk" "net-tools" "git" "shellcheck" "htop" "vim" "curl" "virtualbox" "python3-pip")
 for paquete in "${lista_paquetes[@]}"; do
   echo -e "\n${yellowColour}-------------------- ${paquete%%_*} --------------------${endColour}\n"
   sudo apt install -y "${paquete}"
@@ -62,6 +62,42 @@ actualizar(){
   sudo apt -y upgrade
 }
 
+tweeks(){
+  sudo echo #Pide permiso de administrador.
+  read -r -p "$( echo -e " $espacio ")¿Cambiar fondo de pantalla? (Se necesita connecion a internet) [Y/N] $( echo -e " $espacio ") $( echo -e " $espacio ") Tu Eleccion: " internet  #Pregunta si tenes internet para el fondo
+  echo -e "${greenColour}-------------------- Configuraciones internas de Ubuntu --------------------${endColour}\n"
+  gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM # Cambia de Lugar el dock
+  echo -e "${greenColour}[✓] ${endColour}Cambiar de Lugar el Dock"
+  dconf write /org/gnome/desktop/interface/gtk-theme '"Yaru-dark"' #Cambia el Theme a oscuro
+  echo -e "${greenColour}[✓] ${endColour}Cambiar al Dark Theme"
+  gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed s/.$//), 'steam.desktop','code.desktop']" #Agrega steam, Visual Studio a Favoritos
+  echo -e "${greenColour}[✓] ${endColour}Agregar a favoritos diferentes apps"
+  dconf write /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size 40 #Cambia de tamaño los iconos
+  echo -e "${greenColour}[✓] ${endColour}Cambiar el tamaño de los iconos"
+  dconf write /org/gnome/desktop/session/idle-delay "uint32 0" #Nunca se apaga la pantalla
+  echo -e "${greenColour}[✓] ${endColour}La pantalla nunca se apaga"
+  gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
+  gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM
+  gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode FIXED #Arriba y abajo, todo sobre el dock
+  gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 38
+  gsettings set org.gnome.shell.extensions.dash-to-dock unity-backlit-items false 
+  echo -e "${greenColour}[✓] ${endColour}El Dock ahora se ve mucho mejor"
+  dconf write /org/gnome/shell/extensions/desktop-icons/show-home false # Esconde la carpeta de home en desktop
+  echo -e "${greenColour}[✓] ${endColour}Carpeta \"$USER\" ya no es visible en el escritorio"
+  dconf write /org/gnome/shell/extensions/desktop-icons/show-trash false # Esconde el basurero de home en Desktop
+  echo -e "${greenColour}[✓] ${endColour}El Basurero ya no es visible en el escritorio"
+  gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false # Esconde el dock
+  echo -e "${greenColour}[✓] ${endColour}El dock ahora se esconde cada vez que abris una aplicacion.\n"
+  if [[ "${internet^^}" == "Y" ]];then
+    wget -qcP /home/"$USER"/Pictures/ https://www.hdwallpaper.nu/wp-content/uploads/2019/01/rick_and_morty-18.png
+    echo -e "${greenColour}[✓] ${endColour}Fondo de pantalla cambiado"
+    gsettings set org.gnome.desktop.background picture-options 'zoom' # Estilo de fondo "Zoom/Center/"
+    gsettings set org.gnome.desktop.background picture-uri 'file:///home/'"$USER"'/Pictures/rick_and_morty-18.png' #Cambia fondo de pantalla a RICK-Gris # Necesitas coneccion a internet.
+    gsettings set org.gnome.desktop.background primary-color '#000000' # Cambia color primary a 0
+  fi
+  }
+
+#Menu
 case "$eleccion" in
   [1])
     clear
@@ -74,14 +110,11 @@ case "$eleccion" in
     ;;
   [2])
     clear
+    read -r -p "Agregar cambios visuales al finalizar la instalacion? [Y/N]: " visual
     echo -e " ${greenColour}-------------------- Instalando actualizaciones --------------------${endColour}"
     actualizar
     echo
     instalar
-    echo -e "${yellowColour}-------------------- Instalando Visual Studio Code --------------------${endColour}"
-    sudo apt -y install software-properties-common apt-transport-https wget
-    wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
     echo
     echo -e "${yellowColour}-------------------- Discord --------------------${endColour}"
     echo -e "Es normal que tarde un poquito..."
@@ -90,48 +123,15 @@ case "$eleccion" in
     echo
     echo -e "${yellowColour}-------------------- Steam --------------------${endColour}"
     sudo add-apt-repository multiverse
-    sudo apt -y install steam 
+    sudo apt -y install steam
     echo "Done"
-    echo
-    echo -e "${yellowColour}-------------------- TorNetwork --------------------${endColour}" 
-    echo
-    echo -e "Descargando tor-browser-linux64-11..."
-    wget -qcP /home/"$USER"/Downloads/ https://dist.torproject.org/torbrowser/11.0/tor-browser-linux64-11.0_en-US.tar.xz && echo "Descarga completada, descomprimiendo y llevando al Desktop"; sleep 1; xz -d /home/"$USER"/Downloads/tor-*; tar -xvf /home/"$USER"/Downloads/tor-*.tar; rm -rf /home/"$USER"/Downloads/tor-*.tar;
+    if [[ "${visual^^}" == "Y" ]]; then
+      tweeks
+    fi
     echo -e "${redColour}\n-------------------- FIN DE LA INSTALACION --------------------\n\n${endColour}"
     ;;
   [3]) #ToDo -> Poner mejoras y aprender un poco mas del tweeks. Tambien estaria bueno mostrar cambio por cambio, pero tal vez no (?)
-    sudo echo #Pide permiso de administrador.
-    read -r -p "$( echo -e " $espacio ")¿Cambiar fondo de pantalla? (Se necesita connecion a internet) [Y/N] $( echo -e " $espacio ") $( echo -e " $espacio ") Tu Eleccion: " internet  #Pregunta si tenes internet para el fondo
-    echo -e "${greenColour}-------------------- Configuraciones internas de Ubuntu --------------------${endColour}\n"
-    gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM # Cambia de Lugar el dock
-    echo -e "${greenColour}[✓] ${endColour}Cambiar de Lugar el Dock"
-    dconf write /org/gnome/desktop/interface/gtk-theme '"Yaru-dark"' #Cambia el Theme a oscuro
-    echo -e "${greenColour}[✓] ${endColour}Cambiar al Dark Theme"
-    gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed s/.$//), 'steam.desktop','code.desktop']" #Agrega steam, Visual Studio a Favoritos
-    echo -e "${greenColour}[✓] ${endColour}Agregar a favoritos diferentes apps"
-    dconf write /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size 40 #Cambia de tamaño los iconos
-    echo -e "${greenColour}[✓] ${endColour}Cambiar el tamaño de los iconos"
-    dconf write /org/gnome/desktop/session/idle-delay "uint32 0" #Nunca se apaga la pantalla
-    echo -e "${greenColour}[✓] ${endColour}La pantalla nunca se apaga"
-    gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
-    gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM
-    gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode FIXED #Arriba y abajo, todo sobre el dock
-    gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 38
-    gsettings set org.gnome.shell.extensions.dash-to-dock unity-backlit-items false 
-    echo -e "${greenColour}[✓] ${endColour}El Dock ahora se ve mucho mejor"
-    dconf write /org/gnome/shell/extensions/desktop-icons/show-home false # Esconde la carpeta de home en desktop
-    echo -e "${greenColour}[✓] ${endColour}Carpeta \"$USER\" ya no es visible en el escritorio"
-    dconf write /org/gnome/shell/extensions/desktop-icons/show-trash false # Esconde el basurero de home en Desktop
-    echo -e "${greenColour}[✓] ${endColour}El Basurero ya no es visible en el escritorio"
-    gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false # Esconde el dock
-    echo -e "${greenColour}[✓] ${endColour}El dock ahora se esconde cada vez que abris una aplicacion.\n"
-    if [[ "${internet^^}" == "Y" ]];then
-      wget -qcP /home/"$USER"/Pictures/ https://www.hdwallpaper.nu/wp-content/uploads/2019/01/rick_and_morty-18.png
-      echo -e "${greenColour}[✓] ${endColour}Fondo de pantalla cambiado"
-      gsettings set org.gnome.desktop.background picture-options 'zoom' # Estilo de fondo "Zoom/Center/"
-      gsettings set org.gnome.desktop.background picture-uri 'file:///home/'"$USER"'/Pictures/rick_and_morty-18.png' #Cambia fondo de pantalla a RICK-Gris # Necesitas coneccion a internet.
-      gsettings set org.gnome.desktop.background primary-color '#000000' # Cambia color primary a 0
-    fi
+    tweeks
     exit
     ;;
   [4])
