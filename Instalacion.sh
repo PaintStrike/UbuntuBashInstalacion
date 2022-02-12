@@ -53,6 +53,7 @@ lista_paquetes=("terminator" "vlc" "gnome-tweaks" "rar" "unrar" "p7zip-full" "p7
 for paquete in "${lista_paquetes[@]}"; do
   echo -e "\n${yellowColour}-------------------- ${paquete%%_*} --------------------${endColour}\n"
   sudo apt install -y "${paquete}"
+  sleep 1
 done
 }
 
@@ -109,7 +110,6 @@ case "$eleccion" in
     read -r -p "Queres reiniciar el sistema ahora mismo? [Y/N]: " rebot
     ;;
   [2])
-    clear
     read -r -p "Agregar cambios visuales al finalizar la instalacion? [Y/N]: " visual
     echo -e " ${greenColour}-------------------- Instalando actualizaciones --------------------${endColour}"
     actualizar
@@ -120,14 +120,21 @@ case "$eleccion" in
     echo -e "Es normal que tarde un poquito..."
     sudo snap install discord
     echo "Done"
-    echo
-    echo -e "${yellowColour}-------------------- Steam --------------------${endColour}"
-    sudo add-apt-repository multiverse
-    sudo apt -y install steam
+    sleep 1
+    echo -e "${yellowColour}-------------------- Microsoft Edge --------------------${endColour}"
+    wget -P /home/$USER/Downloads https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/microsoft-edge-stable_98.0.1108.43-1_amd64.deb
+    sudo apt -y install /home/$USER/Downloads/microsoft*.deb
     echo "Done"
+    sleep 1
+    echo -e "${yellowColour}-------------------- Visual Studio --------------------${endColour}"
+    wget -P /home/$USER/Downloads https://az764295.vo.msecnd.net/stable/f80445acd5a3dadef24aa209168452a3d97cc326/code_1.64.2-1644445741_amd64.deb
+    sudo apt -y install /home/$USER/Downloads/code*.deb
+    echo "Done"
+    sleep 1
     if [[ "${visual^^}" == "Y" ]]; then
       tweeks
     fi
+    actualizar
     echo -e "${redColour}\n-------------------- FIN DE LA INSTALACION --------------------\n\n${endColour}"
     ;;
   [3]) #ToDo -> Poner mejoras y aprender un poco mas del tweeks. Tambien estaria bueno mostrar cambio por cambio, pero tal vez no (?)
