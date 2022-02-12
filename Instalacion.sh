@@ -135,6 +135,7 @@ case "$eleccion" in
       tweeks
     fi
     actualizar
+    sudo apt -y autoremove
     echo -e "${redColour}\n-------------------- FIN DE LA INSTALACION --------------------\n\n${endColour}"
     ;;
   [3]) #ToDo -> Poner mejoras y aprender un poco mas del tweeks. Tambien estaria bueno mostrar cambio por cambio, pero tal vez no (?)
