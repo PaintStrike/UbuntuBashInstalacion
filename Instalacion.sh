@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Autor: Tomas Dominguez
-
+#
 #Colors
 greenColour="\e[0;32m\033[1m"
 endColour="\033[0m\e[0m"
@@ -26,9 +26,37 @@ echo -e "            | | | | '_ \| | | | '_ \| __| | | |"
 echo -e "            | |_| | |_) | |_| | | | | |_| |_| |"
 echo -e "             \__,_|_.__/ \__,_|_| |_|\__|\__,_|"
 echo -e "    Mi Setup Ubuntu 20.04 Tomas Dominguez \n \n \n${endColour}"
-echo -e " ${turquoiseColour}\t\tLista de paquetes a instalar \n -VirtualBox \n -Terminator(Terminal)\n -Python - Pip \n -Htop\n -Vim \n -TorNetwork\n -Discord\n -ShellCheck \n -Visual Studio Code \n -VLC \n -Ubuntu restricted \n -GitHub \n -Gnome Tweeks \n -Paquetes de Compresion: [rar, unrar, p7zip-full, p7zip-rar] \n -Wine \n -OpenJDK-11 Java \n -Net Tools \n \n ${endColour}"
-echo -e "${purpleColour}\t\tLista de cambios visuales \n\n -Cambia el Theme a oscuro\n -Curl \n -Cambia el background \n -Cambia de Lugar el dock y otras configs \n -Esconde el basurero del Desktop \n -Esconde la carpeta de user en Desktop \n -Nunca se apaga la pantalla\n\n\n${endColour}"
-read -r -p "  [1] Instalacion de VM Rapida (Update y Upgrade + Reboot Opcional) $( echo -e " $espacio ") [2] Actualizar e instalar los paquetes dentro del script (Sistema principal) $( echo -e " $espacio " ) [3] Cambios visuales e internos (General) $( echo -e " $espacio ") [4] DEBUG $( echo -e " $espacio $espacio ") Tu Eleccion: " eleccion
+echo -e " ${turquoiseColour}Lista de paquetes a instalar:
+  -VirtualBox 
+  -Terminator(Terminal)
+  -Python 
+  -Pip 
+  -Htop
+  -Vim
+  -TorNetwork
+  -Discord
+  -ShellCheck 
+  -Visual Studio Code
+  -VLC 
+  -Ubuntu restricted 
+  -GitHub 
+  -Gnome Tweeks 
+  -Paquetes de Compresion: [rar, unrar, p7zip-full, p7zip-rar] 
+  -OpenJDK-11 Java 
+  -Net Tools \n ${endColour}"
+echo -e "${purpleColour}\t\tLista de cambios visuales 
+  -Cambia el Theme a oscuro
+  -Cambia el background
+  -Cambia de Lugar el dock y otras configs 
+  -Esconde el basurero del Desktop 
+  -Esconde la carpeta de user en Desktop 
+  -Nunca se apaga la pantalla${endColour}\n"
+
+echo -e "  [1] Instalacion de VM Rapida (Update y Upgrade + Reboot Opcional)
+  [2] Actualizar e instalar los paquetes dentro del script (Sistema principal)
+  [3] Cambios visuales e internos (General)
+  [4] DEBUG \n"
+read -r -p " Tu Eleccion: " eleccion
 
 if [[ "$eleccion" == "2" ]]; then
   echo ""
@@ -48,25 +76,25 @@ segundos=5
   done
 }
 
-instalar(){
-lista_paquetes=("terminator" "vlc" "gnome-tweaks" "rar" "unrar" "p7zip-full" "p7zip-rar" "openjdk-11-jdk" "net-tools" "git" "shellcheck" "htop" "vim" "curl" "virtualbox" "python3-pip")
-for paquete in "${lista_paquetes[@]}"; do
-  echo -e "\n${yellowColour}-------------------- ${paquete%%_*} --------------------${endColour}\n"
-  sudo apt install -y "${paquete}"
-  sleep 1
-done
-}
-
 actualizar(){
   sudo apt -y update
   sudo apt-get -y dist-upgrade
   sudo apt -y upgrade
 }
 
+instalar(){
+lista_paquetes=("terminator" "vlc" "gnome-tweaks" "rar" "unrar" "p7zip-full" "p7zip-rar" "openjdk-11-jdk" "net-tools" "git" "shellcheck" "htop" "vim" "curl" "virtualbox" "python3-pip")
+for paquete in "${lista_paquetes[@]}"; do
+  echo -e "\n${yellowColour}Instalando: ${paquete%%_*}...${endColour}\n"
+  sudo apt install -y "${paquete}"
+  sleep 1
+done
+}
+
 tweeks(){
   sudo echo #Pide permiso de administrador.
   read -r -p "$( echo -e " $espacio ")¿Cambiar fondo de pantalla? (Se necesita connecion a internet) [Y/N] $( echo -e " $espacio ") $( echo -e " $espacio ") Tu Eleccion: " internet  #Pregunta si tenes internet para el fondo
-  echo -e "${greenColour}-------------------- Configuraciones internas de Ubuntu --------------------${endColour}\n"
+  echo -e "${greenColour}Configuraciones internas de Ubuntu...${endColour}\n"
   gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM # Cambia de Lugar el dock
   echo -e "${greenColour}[✓] ${endColour}Cambiar de Lugar el Dock"
   dconf write /org/gnome/desktop/interface/gtk-theme '"Yaru-dark"' #Cambia el Theme a oscuro
@@ -104,29 +132,23 @@ case "$eleccion" in
     clear
     sudo echo
     clear
-    echo -e "${greenColour}\n\n-------------------- Actualizando --------------------\n${endColour}"
+    echo -e "${greenColour}\n\nActualizando...\n${endColour}"
     actualizar 
-    echo -e "${redColour}-------------------- FIN DE LA INSTALACION --------------------\n\n${endColour}"
+    echo -e "${redColour}FIN DE LA INSTALACION \n\n${endColour}"
     read -r -p "Queres reiniciar el sistema ahora mismo? [Y/N]: " rebot
     ;;
   [2])
     read -r -p "Agregar cambios visuales al finalizar la instalacion? [Y/N]: " visual
-    echo -e " ${greenColour}-------------------- Instalando actualizaciones --------------------${endColour}"
+    echo -e " ${greenColour}Instalando actualizaciones...${endColour}"
     actualizar
     echo
     instalar
     echo
-    echo -e "${yellowColour}-------------------- Discord --------------------${endColour}"
+    echo -e "${yellowColour}Instalando Discord...${endColour}"
     echo -e "Es normal que tarde un poquito..."
     sudo snap install discord
     echo "Done"
-    sleep 1
-    echo -e "${yellowColour}-------------------- Microsoft Edge --------------------${endColour}"
-    wget -P /home/$USER/Downloads https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/microsoft-edge-stable_98.0.1108.43-1_amd64.deb
-    sudo apt -y install /home/$USER/Downloads/microsoft*.deb
-    echo "Done"
-    sleep 1
-    echo -e "${yellowColour}-------------------- Visual Studio --------------------${endColour}"
+    echo -e "${yellowColour}Instalando Visual Studio...${endColour}"
     wget -P /home/$USER/Downloads https://az764295.vo.msecnd.net/stable/f80445acd5a3dadef24aa209168452a3d97cc326/code_1.64.2-1644445741_amd64.deb
     sudo apt -y install /home/$USER/Downloads/code*.deb
     echo "Done"
@@ -136,9 +158,9 @@ case "$eleccion" in
     fi
     actualizar
     sudo apt -y autoremove
-    echo -e "${redColour}\n-------------------- FIN DE LA INSTALACION --------------------\n\n${endColour}"
+    echo -e "${redColour}\nFIN DE LA INSTALACION\n${endColour}"
     ;;
-  [3]) #ToDo -> Poner mejoras y aprender un poco mas del tweeks. Tambien estaria bueno mostrar cambio por cambio, pero tal vez no (?)
+  [3]) #ToDo -> Poner mejoras y aprender un poco mas del tweeks. Tambien estaria bueno mostrar cambio por cambio
     tweeks
     exit
     ;;
