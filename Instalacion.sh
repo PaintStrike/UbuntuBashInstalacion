@@ -92,7 +92,7 @@ done
 }
 
 tweeks(){
-  sudo echo #Pide permiso de administrador.
+  sudo echo #Pide permiso de administrador
   read -r -p "$( echo -e " $espacio ")¿Cambiar fondo de pantalla? (Se necesita connecion a internet) [Y/N] $( echo -e " $espacio ") $( echo -e " $espacio ") Tu Eleccion: " internet  #Pregunta si tenes internet para el fondo
   echo -e "${greenColour}Configuraciones internas de Ubuntu...${endColour}\n"
   gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM # Cambia de Lugar el dock
